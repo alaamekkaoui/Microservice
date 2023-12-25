@@ -22,7 +22,6 @@ public class CommandeController implements HealthIndicator {
     CommandeDao commandedao;
     @Autowired
     ApplicationPropertiesConfiguration appProperties;
-    // Affiche la liste de tous les Commandes disponibles
     @GetMapping(value = "/Commandes")
     public List<Commande> listeDesCommandes() throws CommandeNotFoundException {
         System.out.println(" ********* CommandeController listeDesCommandes() ");
@@ -34,7 +33,7 @@ public class CommandeController implements HealthIndicator {
         // Retrieve commands from the last 10 days
         List<Commande> commandesLast10Days = commandedao.findByDateAfter(tenDaysAgo);
 
-        return commandesLast10Days;
+        return Commandes;
 
 
     }
