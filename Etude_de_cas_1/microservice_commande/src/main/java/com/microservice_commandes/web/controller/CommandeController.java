@@ -5,12 +5,10 @@ import com.microservice_commandes.dao.CommandeDao;
 import com.microservice_commandes.model.Commande;
 import com.microservice_commandes.web.exceptions.CommandeNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Health;
 import org.springframework.boot.actuate.health.HealthIndicator;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -29,14 +27,17 @@ public class CommandeController implements HealthIndicator {
         if (Commandes.isEmpty())
             throw new CommandeNotFoundException("Aucun Commande n'est disponible à la vente");
         LocalDate tenDaysAgo = LocalDate.now().minusDays(appProperties.getCommandes_last());
-
-        // Retrieve commands from the last 10 days
-        List<Commande> commandesLast10Days = commandedao.findByDateAfter(tenDaysAgo);
-
         return Commandes;
 
-
     }
+    @GetMapping("/commandes-last")
+    @ResponseBody
+    public int getCommandesLast() {
+        int commandesLast = appProperties.getCommandes_last();
+        System.out.println("Commandes Last: " + commandesLast);
+        return commandesLast;
+    }
+
 
     // Supprimer un Commande par son id
     @DeleteMapping(value = "/Commandes/{id}")
