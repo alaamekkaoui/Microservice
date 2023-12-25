@@ -32,10 +32,17 @@ public class CommandeController implements HealthIndicator {
     }
     @GetMapping("/commandes-last")
     @ResponseBody
-    public int getCommandesLast() {
-        int commandesLast = appProperties.getCommandes_last();
-        System.out.println("Commandes Last: " + commandesLast);
-        return commandesLast;
+    public List<Commande> getCommandesLast() {
+        int lastDays = appProperties.getCommandes_last();
+        System.out.println("Commandes Last: " + lastDays);
+
+        // Calculate the date N days ago
+        LocalDate dateNdaysAgo = LocalDate.now().minusDays(lastDays);
+
+        // Filter the list of commands based on the date
+        List<Commande> lastCommands = commandedao.findByDateAfter(dateNdaysAgo);
+        System.out.println("Commandes : " + lastCommands);
+        return lastCommands;
     }
 
 
